@@ -32,6 +32,13 @@ Các mô hình hiện có:
 - **Base URL**: `$BASE` (thay thế bằng `https://llms.uat.galaxy.one`)
 - **Biến Model**: `$MODEL` (thay thế bằng tên mô hình có sẵn)
 
+### Xác thực
+
+API yêu cầu Bearer token trong header `Authorization` cho mọi request.
+- Định dạng: `Authorization: Bearer SECRET_XXXX`
+- Khuyến nghị: lưu token trong biến môi trường và không commit vào git.
+- Với Postman: dùng Authorization type "Bearer Token" với giá trị `{{secret_token}}`.
+
 ## Các endpoint API
 
 ### 1. Tạo văn bản
@@ -235,6 +242,7 @@ import json
 
 BASE_URL = "https://llms.uat.galaxy.one"
 MODEL = "llama3.2:3b"  # Khuyến nghị sử dụng model nhẹ (mặc định) để tối ưu hiệu suất
+SECRET = "SECRET_XXXX"  # Nên đọc từ biến môi trường
 
 # Generate text
 def generate_text(prompt):
@@ -249,7 +257,11 @@ def generate_text(prompt):
         }
     }
     
-    response = requests.post(url, json=payload)
+    response = requests.post(
+        url,
+        headers={"Authorization": f"Bearer {SECRET}"},
+        json=payload
+    )
     return response.json()
 
 # Chat completion
@@ -261,7 +273,11 @@ def chat_completion(messages):
         "stream": False
     }
     
-    response = requests.post(url, json=payload)
+    response = requests.post(
+        url,
+        headers={"Authorization": f"Bearer {SECRET}"},
+        json=payload
+    )
     return response.json()
 
 # Ví dụ sử dụng
@@ -288,6 +304,7 @@ async function generateText(prompt) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer SECRET_XXXX',
         },
         body: JSON.stringify({
             model: MODEL,
@@ -309,6 +326,7 @@ async function chatCompletion(messages) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer SECRET_XXXX',
         },
         body: JSON.stringify({
             model: MODEL,
@@ -343,6 +361,7 @@ chatCompletion([
 ```bash
 curl -X POST "https://llms.uat.galaxy.one/api/generate" \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer SECRET_XXXX" \
   -d '{
     "model": "llama3.2:3b",
     "prompt": "Giải thích về trí tuệ nhân tạo",
@@ -358,6 +377,7 @@ curl -X POST "https://llms.uat.galaxy.one/api/generate" \
 ```bash
 curl -X POST "https://llms.uat.galaxy.one/api/chat" \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer SECRET_XXXX" \
   -d '{
     "model": "llama3.2:3b",
     "messages": [
@@ -377,6 +397,7 @@ curl -X GET "https://llms.uat.galaxy.one/api/tags"
 ```bash
 curl -X POST "https://llms.uat.galaxy.one/api/show" \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer SECRET_XXXX" \
   -d '{"name": "llama3.2:3b"}'
 ```
 
@@ -422,13 +443,16 @@ curl -X DELETE "https://llms.uat.galaxy.one/api/delete" \
 - Thêm biến:
   - `base_url`: `https://llms.uat.galaxy.one`
   - `model`: `llama3.2:3b`
+  - `secret_token`: `SECRET_XXXX`
 
 #### Tạo các Request
 
 **1. Request tạo văn bản**
 - Method: `POST`
 - URL: `{{base_url}}/api/generate`
-- Headers: `Content-Type: application/json`
+- Headers:
+  - `Content-Type: application/json`
+  - `Authorization: Bearer {{secret_token}}`
 - Body (raw JSON):
 ```json
 {
@@ -446,7 +470,9 @@ curl -X DELETE "https://llms.uat.galaxy.one/api/delete" \
 **2. Request chat completion**
 - Method: `POST`
 - URL: `{{base_url}}/api/chat`
-- Headers: `Content-Type: application/json`
+- Headers:
+  - `Content-Type: application/json`
+  - `Authorization: Bearer {{secret_token}}`
 - Body (raw JSON):
 ```json
 {
@@ -476,7 +502,9 @@ curl -X DELETE "https://llms.uat.galaxy.one/api/delete" \
 **4. Request thông tin mô hình**
 - Method: `POST`
 - URL: `{{base_url}}/api/show`
-- Headers: `Content-Type: application/json`
+- Headers:
+  - `Content-Type: application/json`
+  - `Authorization: Bearer {{secret_token}}`
 - Body (raw JSON):
 ```json
 {
