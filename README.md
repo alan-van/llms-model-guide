@@ -13,6 +13,19 @@ Các mô hình hiện có:
 - **qwen3:1.7b** - Mô hình Qwen 3 1.7B tham số
 - **qwen3:8b** - Mô hình Qwen 3 8B tham số
 
+### ⚠️ Khuyến nghị sử dụng
+
+**Để đảm bảo hiệu suất chung cho tất cả người dùng, chúng tôi khuyến nghị:**
+
+- **Sử dụng `qwen3:1.7b`** cho các tác vụ thông thường và phát triển
+- **Chỉ sử dụng các model lớn hơn** (`gpt-oss:20b`, `llama3.1:8b`, `qwen3:8b`) khi thực sự cần thiết cho các tác vụ đặc biệt
+
+**Lý do:**
+- Model `qwen3:1.7b` có kích thước nhỏ hơn, tải nhanh hơn
+- Giảm tải cho hệ thống chung
+- Đảm bảo trải nghiệm tốt cho tất cả người dùng
+- Phù hợp cho hầu hết các tác vụ thông thường
+
 ## Cấu hình cơ bản
 
 - **Base URL**: `$BASE` (thay thế bằng `https://llms.uat.galaxy.one`)
@@ -220,7 +233,7 @@ import requests
 import json
 
 BASE_URL = "https://llms.uat.galaxy.one"
-MODEL = "gpt-oss:20b"
+MODEL = "qwen3:1.7b"  # Khuyến nghị sử dụng model nhỏ để tối ưu hiệu suất
 
 # Generate text
 def generate_text(prompt):
@@ -266,7 +279,7 @@ print(chat_result["message"]["content"])
 
 ```javascript
 const BASE_URL = "https://llms.uat.galaxy.one";
-const MODEL = "llama3.1:8b";
+const MODEL = "qwen3:1.7b";  // Khuyến nghị sử dụng model nhỏ để tối ưu hiệu suất
 
 // Generate text
 async function generateText(prompt) {
@@ -330,7 +343,7 @@ chatCompletion([
 curl -X POST "https://llms.uat.galaxy.one/api/generate" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-oss:20b",
+    "model": "qwen3:1.7b",
     "prompt": "Giải thích về trí tuệ nhân tạo",
     "stream": false,
     "options": {
@@ -345,7 +358,7 @@ curl -X POST "https://llms.uat.galaxy.one/api/generate" \
 curl -X POST "https://llms.uat.galaxy.one/api/chat" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "llama3.1:8b",
+    "model": "qwen3:1.7b",
     "messages": [
       {"role": "system", "content": "Bạn là một trợ lý AI hữu ích."},
       {"role": "user", "content": "Xin chào, bạn khỏe không?"}
@@ -363,7 +376,7 @@ curl -X GET "https://llms.uat.galaxy.one/api/tags"
 ```bash
 curl -X POST "https://llms.uat.galaxy.one/api/show" \
   -H "Content-Type: application/json" \
-  -d '{"name": "qwen3:8b"}'
+  -d '{"name": "qwen3:1.7b"}'
 ```
 
 **5. Sao chép mô hình**
@@ -371,7 +384,7 @@ curl -X POST "https://llms.uat.galaxy.one/api/show" \
 curl -X POST "https://llms.uat.galaxy.one/api/copy" \
   -H "Content-Type: application/json" \
   -d '{
-    "source": "gpt-oss:20b",
+    "source": "qwen3:1.7b",
     "destination": "my-custom-model"
   }'
 ```
@@ -407,7 +420,7 @@ curl -X DELETE "https://llms.uat.galaxy.one/api/delete" \
 - Click "Environments" → "New"
 - Thêm biến:
   - `base_url`: `https://llms.uat.galaxy.one`
-  - `model`: `gpt-oss:20b`
+  - `model`: `qwen3:1.7b`
 
 #### Tạo các Request
 
