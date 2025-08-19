@@ -10,6 +10,7 @@ Các mô hình hiện có:
 
 - **gpt-oss:20b** - Mô hình GPT Open Source 20B tham số
 - **llama3.1:8b** - Mô hình Llama 3.1 8B tham số  
+- **llama3.2:3b** - Mô hình Llama 3.2 3B tham số
 - **qwen3:1.7b** - Mô hình Qwen 3 1.7B tham số
 - **qwen3:8b** - Mô hình Qwen 3 8B tham số
 
@@ -17,14 +18,14 @@ Các mô hình hiện có:
 
 **Để đảm bảo hiệu suất chung cho tất cả người dùng, chúng tôi khuyến nghị:**
 
-- **Sử dụng `qwen3:1.7b`** cho các tác vụ thông thường và phát triển
-- **Chỉ sử dụng các model lớn hơn** (`gpt-oss:20b`, `llama3.1:8b`, `qwen3:8b`) khi thực sự cần thiết cho các tác vụ đặc biệt
+- ✅ **Sử dụng `llama3.2:3b`** làm mặc định cho các tác vụ thông thường và môi trường phát triển
+- ⚠️ **Chỉ sử dụng các model lớn hơn** (`gpt-oss:20b`, `llama3.1:8b`, `qwen3:8b`) khi thực sự cần thiết cho các tác vụ đặc thù
 
 **Lý do:**
-- Model `qwen3:1.7b` có kích thước nhỏ hơn, tải nhanh hơn
-- Giảm tải cho hệ thống chung
-- Đảm bảo trải nghiệm tốt cho tất cả người dùng
-- Phù hợp cho hầu hết các tác vụ thông thường
+- `llama3.2:3b` nhẹ (3B), khởi tạo nhanh, tiêu tốn ít tài nguyên
+- Giảm tải cho hệ thống chung và tránh ảnh hưởng hiệu năng của người dùng khác
+- Chất lượng đầu ra tốt, phù hợp cho đa số tác vụ thường gặp
+- Tối ưu chi phí và thông lượng
 
 ## Cấu hình cơ bản
 
@@ -162,8 +163,8 @@ Lấy thông tin chi tiết về một mô hình cụ thể.
 ```json
 {
   "license": "MIT",
-  "modelfile": "FROM llama3.1:8b\n...",
-  "parameters": "8B",
+  "modelfile": "FROM llama3.2:3b\n...",
+  "parameters": "3B",
   "template": "{{ .Prompt }}",
   "system": "You are a helpful assistant."
 }
@@ -205,7 +206,7 @@ Tải xuống một mô hình từ registry.
 **Request Body**:
 ```json
 {
-  "name": "llama3.1:8b",
+  "name": "llama3.2:3b",
   "insecure": false
 }
 ```
@@ -233,7 +234,7 @@ import requests
 import json
 
 BASE_URL = "https://llms.uat.galaxy.one"
-MODEL = "qwen3:1.7b"  # Khuyến nghị sử dụng model nhỏ để tối ưu hiệu suất
+MODEL = "llama3.2:3b"  # Khuyến nghị sử dụng model nhẹ (mặc định) để tối ưu hiệu suất
 
 # Generate text
 def generate_text(prompt):
@@ -279,7 +280,7 @@ print(chat_result["message"]["content"])
 
 ```javascript
 const BASE_URL = "https://llms.uat.galaxy.one";
-const MODEL = "qwen3:1.7b";  // Khuyến nghị sử dụng model nhỏ để tối ưu hiệu suất
+const MODEL = "llama3.2:3b";  // Khuyến nghị sử dụng model nhẹ (mặc định) để tối ưu hiệu suất
 
 // Generate text
 async function generateText(prompt) {
@@ -343,7 +344,7 @@ chatCompletion([
 curl -X POST "https://llms.uat.galaxy.one/api/generate" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "qwen3:1.7b",
+    "model": "llama3.2:3b",
     "prompt": "Giải thích về trí tuệ nhân tạo",
     "stream": false,
     "options": {
@@ -358,7 +359,7 @@ curl -X POST "https://llms.uat.galaxy.one/api/generate" \
 curl -X POST "https://llms.uat.galaxy.one/api/chat" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "qwen3:1.7b",
+    "model": "llama3.2:3b",
     "messages": [
       {"role": "system", "content": "Bạn là một trợ lý AI hữu ích."},
       {"role": "user", "content": "Xin chào, bạn khỏe không?"}
@@ -376,7 +377,7 @@ curl -X GET "https://llms.uat.galaxy.one/api/tags"
 ```bash
 curl -X POST "https://llms.uat.galaxy.one/api/show" \
   -H "Content-Type: application/json" \
-  -d '{"name": "qwen3:1.7b"}'
+  -d '{"name": "llama3.2:3b"}'
 ```
 
 **5. Sao chép mô hình**
@@ -384,7 +385,7 @@ curl -X POST "https://llms.uat.galaxy.one/api/show" \
 curl -X POST "https://llms.uat.galaxy.one/api/copy" \
   -H "Content-Type: application/json" \
   -d '{
-    "source": "qwen3:1.7b",
+    "source": "llama3.2:3b",
     "destination": "my-custom-model"
   }'
 ```
@@ -420,7 +421,7 @@ curl -X DELETE "https://llms.uat.galaxy.one/api/delete" \
 - Click "Environments" → "New"
 - Thêm biến:
   - `base_url`: `https://llms.uat.galaxy.one`
-  - `model`: `qwen3:1.7b`
+  - `model`: `llama3.2:3b`
 
 #### Tạo các Request
 
